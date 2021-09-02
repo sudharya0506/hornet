@@ -1,0 +1,7 @@
+Hornet deployment manifest has 3 replicas with anti pod affinity configured so that these replicas do not get scheduled on same availability zone. This would take care surviving a disaster.
+
+Expose Hornet deployment:
+kubectl expose deploy hornet --port=8081
+kubectl edit svc hornet // change the type from ClusterIP to LoadBalancer
+open 8081 port in the security group of the EC2 instance
+Access the Hornet API using the LoadBalancer
