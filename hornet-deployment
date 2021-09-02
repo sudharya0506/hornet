@@ -1,0 +1,35 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: ~
+  labels:
+    app: hornet
+  name: hornet
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: hornet
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: ~
+      labels:
+        app: hornet
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - hornet
+              topologyKey: kubernetes.io/hostname
+      containers:
+        - image: "sudhir0506/hornet:latest"
+          name: hornet
+          resources: {}
+status: {}
