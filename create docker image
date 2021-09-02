@@ -1,0 +1,408 @@
+git clone https://github.com/gohornet/hornet.git
+Cloning into 'hornet'...
+remote: Enumerating objects: 19356, done.
+remote: Counting objects: 100% (3851/3851), done.
+remote: Compressing objects: 100% (1447/1447), done.
+remote: Total 19356 (delta 2484), reused 3409 (delta 2255), pack-reused 15505
+Receiving objects: 100% (19356/19356), 155.69 MiB | 20.27 MiB/s, done.
+Resolving deltas: 100% (13423/13423), done.
+$ ls
+Desktop  hornet
+$ cd hornet
+$ ls
+CHANGELOG.md                   config.json      docker-compose.yml  integration-tests  ObjectStorage.md  private_tangle  tools
+CODE_OF_CONDUCT.md             CONTRIBUTING.md  documentation       LICENSE            peering.json      profiles.json
+config_chrysalis_testnet.json  core             go.mod              main.go            pkg               README.md
+config_comnet.json             docker           go.sum              nfpm               plugins           scripts
+$ cd docker
+$ ls
+Dockerfile  README.md
+$ cd..
+cd..: command not found
+$ cd ..
+$ mv go.mod go.sum config.json config_comnet.json peering.json profiles.json docker/
+$ cd docker
+$ ls
+config_comnet.json  config.json  Dockerfile  go.mod  go.sum  peering.json  profiles.json  README.md
+$ docker build -t hornet .
+Sending build context to Docker daemon  255.5kB
+Step 1/31 : FROM golang@sha256:448a13037d13401ad9b31fabf91d6b8a3c5c35d336cc8af760b2ab4ed85d4155 AS build
+sha256:448a13037d13401ad9b31fabf91d6b8a3c5c35d336cc8af760b2ab4ed85d4155: Pulling from library/golang
+627b765e08d1: Pull complete 
+c040670e5e55: Pull complete 
+073a180f4992: Pull complete 
+bf76209566d0: Pull complete 
+6182a456504b: Pull complete 
+636ca4e39e2f: Pull complete 
+9bf36a081430: Pull complete 
+Digest: sha256:448a13037d13401ad9b31fabf91d6b8a3c5c35d336cc8af760b2ab4ed85d4155
+Status: Downloaded newer image for golang@sha256:448a13037d13401ad9b31fabf91d6b8a3c5c35d336cc8af760b2ab4ed85d4155
+ ---> 0821480a2b48
+Step 2/31 : ARG BUILD_TAGS=builtin_static,rocksdb
+ ---> Running in ef00a331e720
+Removing intermediate container ef00a331e720
+ ---> 84ffb6c4414b
+Step 3/31 : LABEL org.label-schema.description="HORNET - The IOTA community node"
+ ---> Running in 2ddbbcb69f12
+Removing intermediate container 2ddbbcb69f12
+ ---> 9d3a3ebdd1ac
+Step 4/31 : LABEL org.label-schema.name="gohornet/hornet"
+ ---> Running in 3df7577c216e
+Removing intermediate container 3df7577c216e
+ ---> 3a57c2189bf2
+Step 5/31 : LABEL org.label-schema.schema-version="1.0"
+ ---> Running in 38d76447e674
+Removing intermediate container 38d76447e674
+ ---> 7fe4b5986373
+Step 6/31 : LABEL org.label-schema.vcs-url="https://github.com/gohornet/hornet"
+ ---> Running in 653b066229b1
+Removing intermediate container 653b066229b1
+ ---> 4465107e8bc9
+Step 7/31 : LABEL org.label-schema.usage="https://github.com/gohornet/hornet/blob/main/documentation/docs/getting_started/using_docker.md"
+ ---> Running in 5c27e1b3f7ca
+Removing intermediate container 5c27e1b3f7ca
+ ---> fe5681388002
+Step 8/31 : RUN update-ca-certificates
+ ---> Running in 2e32b14b2e36
+Updating certificates in /etc/ssl/certs...
+0 added, 0 removed; done.
+Running hooks in /etc/ca-certificates/update.d...
+done.
+Removing intermediate container 2e32b14b2e36
+ ---> 566d5a6421d9
+Step 9/31 : RUN mkdir /app
+ ---> Running in dcf25dc57aa7
+Removing intermediate container dcf25dc57aa7
+ ---> 1913669f280e
+Step 10/31 : WORKDIR /app
+ ---> Running in c09e947e8aab
+Removing intermediate container c09e947e8aab
+ ---> 68c76f84b407
+Step 11/31 : COPY go.mod .
+ ---> 3415700a8527
+Step 12/31 : COPY go.sum .
+ ---> 513cf595546b
+Step 13/31 : ENV GO111MODULE=on
+ ---> Running in 50669ad097a9
+Removing intermediate container 50669ad097a9
+ ---> 1cfb46a26718
+Step 14/31 : RUN go mod download
+ ---> Running in 8dd7af2e36eb
+Removing intermediate container 8dd7af2e36eb
+ ---> cef556338c32
+Step 15/31 : RUN go mod verify
+ ---> Running in da966e7b64e9
+all modules verified
+Removing intermediate container da966e7b64e9
+ ---> 908ba886738c
+Step 16/31 : COPY . .
+ ---> 96d42a028f58
+Step 17/31 : RUN GOOS=linux GOARCH=amd64 go build       -tags="$BUILD_TAGS"       -ldflags='-w -s' -a       -o /go/bin/hornet
+ ---> Running in 671576e62158
+no Go files in /app
+The command '/bin/sh -c GOOS=linux GOARCH=amd64 go build       -tags="$BUILD_TAGS"       -ldflags='-w -s' -a       -o /go/bin/hornet' returned a non-zero code: 1
+$ ls
+config_comnet.json  config.json  Dockerfile  go.mod  go.sum  peering.json  profiles.json  README.md
+$ docker build -t hornet .
+Sending build context to Docker daemon  255.5kB
+Step 1/31 : FROM golang@sha256:448a13037d13401ad9b31fabf91d6b8a3c5c35d336cc8af760b2ab4ed85d4155 AS build
+ ---> 0821480a2b48
+Step 2/31 : ARG BUILD_TAGS=builtin_static,rocksdb
+ ---> Using cache
+ ---> 84ffb6c4414b
+Step 3/31 : LABEL org.label-schema.description="HORNET - The IOTA community node"
+ ---> Using cache
+ ---> 9d3a3ebdd1ac
+Step 4/31 : LABEL org.label-schema.name="gohornet/hornet"
+ ---> Using cache
+ ---> 3a57c2189bf2
+Step 5/31 : LABEL org.label-schema.schema-version="1.0"
+ ---> Using cache
+ ---> 7fe4b5986373
+Step 6/31 : LABEL org.label-schema.vcs-url="https://github.com/gohornet/hornet"
+ ---> Using cache
+ ---> 4465107e8bc9
+Step 7/31 : LABEL org.label-schema.usage="https://github.com/gohornet/hornet/blob/main/documentation/docs/getting_started/using_docker.md"
+ ---> Using cache
+ ---> fe5681388002
+Step 8/31 : RUN update-ca-certificates
+ ---> Using cache
+ ---> 566d5a6421d9
+Step 9/31 : RUN mkdir /app
+ ---> Using cache
+ ---> 1913669f280e
+Step 10/31 : WORKDIR /app
+ ---> Using cache
+ ---> 68c76f84b407
+Step 11/31 : COPY go.mod .
+ ---> Using cache
+ ---> 3415700a8527
+Step 12/31 : COPY go.sum .
+ ---> Using cache
+ ---> 513cf595546b
+Step 13/31 : ENV GO111MODULE=on
+ ---> Using cache
+ ---> 1cfb46a26718
+Step 14/31 : RUN go mod download
+ ---> Using cache
+ ---> cef556338c32
+Step 15/31 : RUN go mod verify
+ ---> Using cache
+ ---> 908ba886738c
+Step 16/31 : COPY . .
+ ---> Using cache
+ ---> 96d42a028f58
+Step 17/31 : RUN GOOS=linux GOARCH=amd64 go build       -tags="$BUILD_TAGS"       -ldflags='-w -s' -a       -o /go/bin/hornet
+ ---> Running in 957cfe8194fa
+no Go files in /app
+The command '/bin/sh -c GOOS=linux GOARCH=amd64 go build       -tags="$BUILD_TAGS"       -ldflags='-w -s' -a       -o /go/bin/hornet' returned a non-zero code: 1
+$ ls
+config_comnet.json  config.json  Dockerfile  go.mod  go.sum  peering.json  profiles.json  README.md
+$ cd ..
+$ ls
+CHANGELOG.md                   CONTRIBUTING.md  docker-compose.yml  LICENSE  ObjectStorage.md  private_tangle  tools
+CODE_OF_CONDUCT.md             core             documentation       main.go  pkg               README.md
+config_chrysalis_testnet.json  docker           integration-tests   nfpm     plugins           scripts
+$ mv main.go docker/
+$ cd docker
+$ ls
+config_comnet.json  config.json  Dockerfile  go.mod  go.sum  main.go  peering.json  profiles.json  README.md
+$ docker build -t hornet .
+Sending build context to Docker daemon    258kB
+Step 1/31 : FROM golang@sha256:448a13037d13401ad9b31fabf91d6b8a3c5c35d336cc8af760b2ab4ed85d4155 AS build
+ ---> 0821480a2b48
+Step 2/31 : ARG BUILD_TAGS=builtin_static,rocksdb
+ ---> Using cache
+ ---> 84ffb6c4414b
+Step 3/31 : LABEL org.label-schema.description="HORNET - The IOTA community node"
+ ---> Using cache
+ ---> 9d3a3ebdd1ac
+Step 4/31 : LABEL org.label-schema.name="gohornet/hornet"
+ ---> Using cache
+ ---> 3a57c2189bf2
+Step 5/31 : LABEL org.label-schema.schema-version="1.0"
+ ---> Using cache
+ ---> 7fe4b5986373
+Step 6/31 : LABEL org.label-schema.vcs-url="https://github.com/gohornet/hornet"
+ ---> Using cache
+ ---> 4465107e8bc9
+Step 7/31 : LABEL org.label-schema.usage="https://github.com/gohornet/hornet/blob/main/documentation/docs/getting_started/using_docker.md"
+ ---> Using cache
+ ---> fe5681388002
+Step 8/31 : RUN update-ca-certificates
+ ---> Using cache
+ ---> 566d5a6421d9
+Step 9/31 : RUN mkdir /app
+ ---> Using cache
+ ---> 1913669f280e
+Step 10/31 : WORKDIR /app
+ ---> Using cache
+ ---> 68c76f84b407
+Step 11/31 : COPY go.mod .
+ ---> Using cache
+ ---> 3415700a8527
+Step 12/31 : COPY go.sum .
+ ---> Using cache
+ ---> 513cf595546b
+Step 13/31 : ENV GO111MODULE=on
+ ---> Using cache
+ ---> 1cfb46a26718
+Step 14/31 : RUN go mod download
+ ---> Using cache
+ ---> cef556338c32
+Step 15/31 : RUN go mod verify
+ ---> Using cache
+ ---> 908ba886738c
+Step 16/31 : COPY . .
+ ---> fa9988b89d75
+Step 17/31 : RUN GOOS=linux GOARCH=amd64 go build       -tags="$BUILD_TAGS"       -ldflags='-w -s' -a       -o /go/bin/hornet
+ ---> Running in d509218ac583
+main.go:4:2: no required module provides package github.com/gohornet/hornet/core/app; to add it:
+        go get github.com/gohornet/hornet/core/app
+main.go:5:2: no required module provides package github.com/gohornet/hornet/core/database; to add it:
+        go get github.com/gohornet/hornet/core/database
+main.go:6:2: no required module provides package github.com/gohornet/hornet/core/gossip; to add it:
+        go get github.com/gohornet/hornet/core/gossip
+main.go:7:2: no required module provides package github.com/gohornet/hornet/core/gracefulshutdown; to add it:
+        go get github.com/gohornet/hornet/core/gracefulshutdown
+main.go:8:2: no required module provides package github.com/gohornet/hornet/core/p2p; to add it:
+        go get github.com/gohornet/hornet/core/p2p
+main.go:9:2: no required module provides package github.com/gohornet/hornet/core/pow; to add it:
+        go get github.com/gohornet/hornet/core/pow
+main.go:10:2: no required module provides package github.com/gohornet/hornet/core/profile; to add it:
+        go get github.com/gohornet/hornet/core/profile
+main.go:11:2: no required module provides package github.com/gohornet/hornet/core/protocfg; to add it:
+        go get github.com/gohornet/hornet/core/protocfg
+main.go:12:2: no required module provides package github.com/gohornet/hornet/core/snapshot; to add it:
+        go get github.com/gohornet/hornet/core/snapshot
+main.go:13:2: no required module provides package github.com/gohornet/hornet/core/tangle; to add it:
+        go get github.com/gohornet/hornet/core/tangle
+main.go:14:2: no required module provides package github.com/gohornet/hornet/pkg/node; to add it:
+        go get github.com/gohornet/hornet/pkg/node
+main.go:15:2: no required module provides package github.com/gohornet/hornet/plugins/autopeering; to add it:
+        go get github.com/gohornet/hornet/plugins/autopeering
+main.go:16:2: no required module provides package github.com/gohornet/hornet/plugins/coordinator; to add it:
+        go get github.com/gohornet/hornet/plugins/coordinator
+main.go:17:2: no required module provides package github.com/gohornet/hornet/plugins/dashboard; to add it:
+        go get github.com/gohornet/hornet/plugins/dashboard
+main.go:18:2: no required module provides package github.com/gohornet/hornet/plugins/debug; to add it:
+        go get github.com/gohornet/hornet/plugins/debug
+main.go:19:2: no required module provides package github.com/gohornet/hornet/plugins/faucet; to add it:
+        go get github.com/gohornet/hornet/plugins/faucet
+main.go:20:2: no required module provides package github.com/gohornet/hornet/plugins/migrator; to add it:
+        go get github.com/gohornet/hornet/plugins/migrator
+main.go:21:2: no required module provides package github.com/gohornet/hornet/plugins/mqtt; to add it:
+        go get github.com/gohornet/hornet/plugins/mqtt
+main.go:22:2: no required module provides package github.com/gohornet/hornet/plugins/profiling; to add it:
+        go get github.com/gohornet/hornet/plugins/profiling
+main.go:23:2: no required module provides package github.com/gohornet/hornet/plugins/prometheus; to add it:
+        go get github.com/gohornet/hornet/plugins/prometheus
+main.go:24:2: no required module provides package github.com/gohornet/hornet/plugins/receipt; to add it:
+        go get github.com/gohornet/hornet/plugins/receipt
+main.go:25:2: no required module provides package github.com/gohornet/hornet/plugins/restapi; to add it:
+        go get github.com/gohornet/hornet/plugins/restapi
+main.go:26:2: no required module provides package github.com/gohornet/hornet/plugins/restapi/v1; to add it:
+        go get github.com/gohornet/hornet/plugins/restapi/v1
+main.go:27:2: no required module provides package github.com/gohornet/hornet/plugins/spammer; to add it:
+        go get github.com/gohornet/hornet/plugins/spammer
+main.go:28:2: no required module provides package github.com/gohornet/hornet/plugins/urts; to add it:
+        go get github.com/gohornet/hornet/plugins/urts
+main.go:29:2: no required module provides package github.com/gohornet/hornet/plugins/versioncheck; to add it:
+        go get github.com/gohornet/hornet/plugins/versioncheck
+main.go:30:2: no required module provides package github.com/gohornet/hornet/plugins/warpsync; to add it:
+        go get github.com/gohornet/hornet/plugins/warpsync
+The command '/bin/sh -c GOOS=linux GOARCH=amd64 go build       -tags="$BUILD_TAGS"       -ldflags='-w -s' -a       -o /go/bin/hornet' returned a non-zero code: 1
+$ cd ..
+$ ls
+CHANGELOG.md                   CONTRIBUTING.md  docker-compose.yml  LICENSE           pkg             README.md
+CODE_OF_CONDUCT.md             core             documentation       nfpm              plugins         scripts
+config_chrysalis_testnet.json  docker           integration-tests   ObjectStorage.md  private_tangle  tools
+$ mv core pkg plugins docker/
+$ cd docker
+$ ls
+config_comnet.json  config.json  core  Dockerfile  go.mod  go.sum  main.go  peering.json  pkg  plugins  profiles.json  README.md
+$ docker build -t hornet .
+Sending build context to Docker daemon   5.96MB
+Step 1/31 : FROM golang@sha256:448a13037d13401ad9b31fabf91d6b8a3c5c35d336cc8af760b2ab4ed85d4155 AS build
+ ---> 0821480a2b48
+Step 2/31 : ARG BUILD_TAGS=builtin_static,rocksdb
+ ---> Using cache
+ ---> 84ffb6c4414b
+Step 3/31 : LABEL org.label-schema.description="HORNET - The IOTA community node"
+ ---> Using cache
+ ---> 9d3a3ebdd1ac
+Step 4/31 : LABEL org.label-schema.name="gohornet/hornet"
+ ---> Using cache
+ ---> 3a57c2189bf2
+Step 5/31 : LABEL org.label-schema.schema-version="1.0"
+ ---> Using cache
+ ---> 7fe4b5986373
+Step 6/31 : LABEL org.label-schema.vcs-url="https://github.com/gohornet/hornet"
+ ---> Using cache
+ ---> 4465107e8bc9
+Step 7/31 : LABEL org.label-schema.usage="https://github.com/gohornet/hornet/blob/main/documentation/docs/getting_started/using_docker.md"
+ ---> Using cache
+ ---> fe5681388002
+Step 8/31 : RUN update-ca-certificates
+ ---> Using cache
+ ---> 566d5a6421d9
+Step 9/31 : RUN mkdir /app
+ ---> Using cache
+ ---> 1913669f280e
+Step 10/31 : WORKDIR /app
+ ---> Using cache
+ ---> 68c76f84b407
+Step 11/31 : COPY go.mod .
+ ---> Using cache
+ ---> 3415700a8527
+Step 12/31 : COPY go.sum .
+ ---> Using cache
+ ---> 513cf595546b
+Step 13/31 : ENV GO111MODULE=on
+ ---> Using cache
+ ---> 1cfb46a26718
+Step 14/31 : RUN go mod download
+ ---> Using cache
+ ---> cef556338c32
+Step 15/31 : RUN go mod verify
+ ---> Using cache
+ ---> 908ba886738c
+Step 16/31 : COPY . .
+ ---> c85ce8bb99fc
+Step 17/31 : RUN GOOS=linux GOARCH=amd64 go build       -tags="$BUILD_TAGS"       -ldflags='-w -s' -a       -o /go/bin/hornet
+ ---> Running in 54d80fb55d8d
+Removing intermediate container 54d80fb55d8d
+ ---> 69122dcd5ad8
+Step 18/31 : FROM gcr.io/distroless/cc@sha256:1a125767c4a066c5c2c70b326bcc3cff8ae4260de0b488ddcfdfe84f20a373b4
+sha256:1a125767c4a066c5c2c70b326bcc3cff8ae4260de0b488ddcfdfe84f20a373b4: Pulling from distroless/cc
+0d7d70899875: Pull complete 
+e31777b27d40: Pull complete 
+7808bbe51ad4: Pull complete 
+Digest: sha256:1a125767c4a066c5c2c70b326bcc3cff8ae4260de0b488ddcfdfe84f20a373b4
+Status: Downloaded newer image for gcr.io/distroless/cc@sha256:1a125767c4a066c5c2c70b326bcc3cff8ae4260de0b488ddcfdfe84f20a373b4
+ ---> 42c7a22bc1b6
+Step 19/31 : EXPOSE 15600/tcp
+ ---> Running in e5eb205b4af8
+Removing intermediate container e5eb205b4af8
+ ---> a95f65612dfd
+Step 20/31 : EXPOSE 14626/udp
+ ---> Running in ed88807b14bc
+Removing intermediate container ed88807b14bc
+ ---> c6f6df7c97c2
+Step 21/31 : EXPOSE 14265/tcp
+ ---> Running in b90595edf6e7
+Removing intermediate container b90595edf6e7
+ ---> 35be85de33a4
+Step 22/31 : EXPOSE 8081/tcp
+ ---> Running in 3dd28ec17315
+Removing intermediate container 3dd28ec17315
+ ---> cb5a4c4dc004
+Step 23/31 : EXPOSE 1883/tcp
+ ---> Running in 5ea4463d629b
+Removing intermediate container 5ea4463d629b
+ ---> 7f34307247a2
+Step 24/31 : COPY --chown=nonroot:nonroot --from=build /go/bin/hornet /app/hornet
+ ---> 866dc347d44a
+Step 25/31 : COPY ./config.json /app/config.json
+ ---> 6da7f4290879
+Step 26/31 : COPY ./config_comnet.json /app/config_comnet.json
+ ---> dd6c32b6d102
+Step 27/31 : COPY ./peering.json /app/peering.json
+ ---> 4e9840e2f4fb
+Step 28/31 : COPY ./profiles.json /app/profiles.json
+ ---> 5961e3b15093
+Step 29/31 : WORKDIR /app
+ ---> Running in 959ca3c706d4
+Removing intermediate container 959ca3c706d4
+ ---> 140950e7d994
+Step 30/31 : USER nonroot
+ ---> Running in 8bf6a3be7241
+Removing intermediate container 8bf6a3be7241
+ ---> 895b7cea191b
+Step 31/31 : ENTRYPOINT ["/app/hornet"]
+ ---> Running in 1ad06d5b68ab
+Removing intermediate container 1ad06d5b68ab
+ ---> c8cff712ed1a
+Successfully built c8cff712ed1a
+Successfully tagged hornet:latest
+$ docker login
+Login with your Docker ID to push and pull images from Docker Hub. If you don't have a Docker ID, head over to https://hub.docker.com to create one.
+Username: sudhir0506
+Password: 
+WARNING! Your password will be stored unencrypted in /root/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded
+$ docker image tag hornet:latest sudhir0506/hornet:latest
+$ docker image push sudhir0506/hornet:latest
+The push refers to repository [docker.io/sudhir0506/hornet]
+9a02d26e0750: Pushed 
+3bd8283dbe0e: Pushed 
+61ff4293f9e7: Pushed 
+68e2228df5cc: Pushed 
+9cad671c0a42: Pushed 
+b71f9b2b3a16: Pushed 
+208cc594e520: Pushed 
+07363fa84210: Pushed 
+latest: digest: sha256:994b25f61555bdd33b2d7da32172ec58765d9358f98f51a8253cfd6209de5653 size: 1990
